@@ -12,7 +12,7 @@ class DbHelper(context: Context): SQLiteOpenHelper(context,DATABASE_NAME,null,DA
     override fun onCreate(db: SQLiteDatabase?) {
         val CREATE_STUDENTS_TABLE = ("CREATE TABLE " + TABLE_STUDENTS + "("
                 + KEY_ID + " INTEGER PRIMARY KEY," + KEY_NAME + " TEXT,"
-                + KEY_EMAIL + " TEXT" + ")")
+                + KEY_MOBILE + " VARCHAR(10)" + ")")
         db?.execSQL(CREATE_STUDENTS_TABLE)
 
     }
@@ -27,7 +27,7 @@ class DbHelper(context: Context): SQLiteOpenHelper(context,DATABASE_NAME,null,DA
         private val TABLE_STUDENTS = "StudentsTable"
         private val KEY_ID = "id"
         private val KEY_NAME = "name"
-        private val KEY_EMAIL = "email"
+        private val KEY_MOBILE = "mobile"
     }
 
 
@@ -35,9 +35,9 @@ class DbHelper(context: Context): SQLiteOpenHelper(context,DATABASE_NAME,null,DA
     fun addstudents(emp: StudentDto):Long{
         val db = this.writableDatabase
         val contentValues = ContentValues()
-//        contentValues.put(KEY_ID, emp.studentId)
+        contentValues.put(KEY_ID, emp.studentId)
         contentValues.put(KEY_NAME, emp.studentName) // StudentDto Name  
-        contentValues.put(KEY_EMAIL,emp.studentEmail ) // StudentDto Phone  
+        contentValues.put(KEY_MOBILE,emp.studentMobile ) // StudentDto Phone
         // Inserting Row  
         val success = db.insert(TABLE_STUDENTS, null, contentValues)
         //2nd argument is String containing nullColumnHack  
@@ -58,13 +58,13 @@ class DbHelper(context: Context): SQLiteOpenHelper(context,DATABASE_NAME,null,DA
         }
         var studentId: Int
         var studentName: String
-        var studentEmail: String
+        var studentMobile: String
         if (cursor.moveToFirst()) {
             do {
                 studentId = cursor.getInt(cursor.getColumnIndex("id"))
                 studentName = cursor.getString(cursor.getColumnIndex("name"))
-                studentEmail = cursor.getString(cursor.getColumnIndex("email"))
-                val emp= StudentDto(studentId, studentName, studentEmail)
+                studentMobile = cursor.getString(cursor.getColumnIndex("mobile"))
+                val emp= StudentDto(studentId, studentName, studentMobile)
                 empList.add(emp)
             } while (cursor.moveToNext())
         }
@@ -76,7 +76,7 @@ class DbHelper(context: Context): SQLiteOpenHelper(context,DATABASE_NAME,null,DA
         val contentValues = ContentValues()
         contentValues.put(KEY_ID, emp.studentId)
         contentValues.put(KEY_NAME, emp.studentName) // StudentDto Name  
-        contentValues.put(KEY_EMAIL,emp.studentEmail ) // StudentDto Email  
+        contentValues.put(KEY_MOBILE,emp.studentMobile ) // StudentDto Email
 
         // Updating Row  
         val success = db.update(TABLE_STUDENTS, contentValues,"id="+emp.studentId,null)
@@ -85,12 +85,12 @@ class DbHelper(context: Context): SQLiteOpenHelper(context,DATABASE_NAME,null,DA
         return success
     }
     //method to delete data  
-    fun deleteStudent(emp: StudentDto):Int{
+    fun deleteStudent(studentId: Int):Int{
         val db = this.writableDatabase
         val contentValues = ContentValues()
-        contentValues.put(KEY_ID, emp.studentId) // StudentDto studentId  
+        contentValues.put(KEY_ID, studentId) // StudentDto studentId
         // Deleting Row  
-        val success = db.delete(TABLE_STUDENTS,"id="+emp.studentId,null)
+        val success = db.delete(TABLE_STUDENTS,"id="+ studentId,null)
         //2nd argument is String containing nullColumnHack  
         db.close() // Closing database connection  
         return success

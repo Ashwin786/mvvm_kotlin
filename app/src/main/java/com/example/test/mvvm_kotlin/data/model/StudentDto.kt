@@ -1,9 +1,10 @@
 package com.example.test.mvvm_kotlin.data.model
 
-class StudentDto(val id: Int, var name: String, var email: String) {
+class StudentDto(private val id: Int,private var name: String, private var mobile: String) {
 
     val studentId = id
     val studentName = name
-    val studentEmail = email
+    val studentMobile = mobile
+
 
 }

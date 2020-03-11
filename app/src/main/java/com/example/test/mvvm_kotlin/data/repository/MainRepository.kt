@@ -13,4 +13,12 @@ class MainRepository(private val dbHelper: DbHelper) {
         return dbHelper.addstudents(studentDto)
     }
 
+    fun updateStudent(studentDto: StudentDto): Int {
+        return dbHelper.updateStudent(studentDto)
+    }
+
+    fun deleteStudent(deleteId: Int): Int {
+        return dbHelper.deleteStudent(deleteId)
+    }
+
 }

@@ -13,9 +13,10 @@ class MainAdapter(
 ) : RecyclerView.Adapter<MainAdapter.DataViewHolder>() {
 
     class DataViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(user: StudentDto) {
-            itemView.textViewUserName.text = user.name
-            itemView.textViewUserEmail.text = user.email
+        fun bind(dto: StudentDto) {
+            itemView.textViewUserId.text = Integer.toString(dto.studentId)
+            itemView.textViewUserName.text = dto.studentName
+            itemView.textViewUserEmail.text = dto.studentMobile
 
         }
     }
@@ -34,6 +35,7 @@ class MainAdapter(
         holder.bind(students[position])
 
     fun addData(list: List<StudentDto>) {
+        students.clear()
         students.addAll(list)
     }
 
